@@ -1,0 +1,23 @@
+syntax="proto3";
+
+package proto;
+
+option go_package = "./proto";
+
+
+message NewTodo {
+   string name = 1;
+   string description = 2;
+   bool done = 3;
+}
+
+message Todo {
+   string name = 1;
+   string description = 2;
+   bool done = 3;
+   string id = 4;
+}
+
+service TodoService {
+   rpc CreateTodo(NewTodo) returns (Todo) {}
+}
