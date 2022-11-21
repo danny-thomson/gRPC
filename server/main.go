@@ -41,8 +41,8 @@ func (s *server) CreateTodo(ctx context.Context, todo *pb.NewTodo) (*pb.Todo, er
 
 	//response
 	return &pb.Todo{
-		Name:        "Hello " + todo.GetName(),
-		Description: "Response " + todo.GetDescription(),
+		Name:        todo.GetName(),
+		Description: todo.GetDescription(),
 		Done:        todo.GetDone(),
 	}, nil
 }
