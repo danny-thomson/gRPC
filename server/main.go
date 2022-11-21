@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -14,7 +13,7 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port = "localhost:50051"
 )
 
 type server struct {
@@ -22,8 +21,7 @@ type server struct {
 }
 
 func main() {
-	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -36,14 +34,15 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-	fmt.Println("inside main")
 }
 
 func (s *server) CreateTodo(ctx context.Context, todo *pb.NewTodo) (*pb.Todo, error) {
-	fmt.Println("Desc", todo.GetDescription())
-	fmt.Println("Name", todo.GetName())
-	fmt.Println("Done", todo.GetDone())
+	fmt.Printf("Name: %s, Description: %s, Done: %t\n", todo.GetName(), todo.GetDescription(), todo.GetDone())
 
 	//response
-	return &pb.Todo{Name: "Hello " + todo.GetName(), Description: "Response " +todo.GetDescription()}, nil
+	return &pb.Todo{
+		Name:        "Hello " + todo.GetName(),
+		Description: "Response " + todo.GetDescription(),
+		Done:        todo.GetDone(),
+	}, nil
 }
