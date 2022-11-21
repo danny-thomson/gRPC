@@ -43,10 +43,15 @@ func TestCreateTodo(t *testing.T) {
 	defer conn.Close()
 
 	client := pb.NewTodoServiceClient(conn)
-	resp, err := client.CreateTodo(ctx, &pb.NewTodo{Name: "Test Name", Description: "Testing the description", Done: true})
+	newTodo := &pb.NewTodo{Name: "Test Name", Description: "Testing the description", Done: true}
+	resp, err := client.CreateTodo(ctx, newTodo)
 	if err != nil {
 		t.Fatalf("CreateTodo failed: %v", err)
 	}
 
 	log.Printf("Response: %+v", resp)
+
+	if newTodo.Name != resp.Name || newTodo.Description != resp.Description || newTodo.Done != resp.Done {
+		t.Error("Value is not equal")
+	}
 }

@@ -19,7 +19,6 @@ type mockTodoServiceServer struct {
 }
 
 func (*mockTodoServiceServer) CreateTodo(ctx context.Context, todo *pb.NewTodo) (*pb.Todo, error) {
-
 	return &pb.Todo{
 		Name:        todo.GetName(),
 		Description: todo.GetDescription(),
@@ -47,7 +46,6 @@ func dialer() func(context.Context, string) (net.Conn, error) {
 }
 
 func TestDepositClient_Deposit(t *testing.T) {
-
 	ctx := context.Background()
 
 	conn, err := grpc.DialContext(ctx, "", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithContextDialer(dialer()))
